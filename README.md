@@ -6,11 +6,11 @@ See the frontend [here](https://github.com/EECE3093C/team-project-golden-girls).
 ## API 
 
 Needed calls:
-[] games
-[] players
-[] teams
-[] bets
-[] leagues
+- [ ] games
+- [ ] players
+- [ ] teams
+- [ ] bets
+- [ ] leagues
 
 | Type | Call | Description |
 | - | - | - |
