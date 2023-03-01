@@ -1,0 +1,29 @@
+{
+    "team":
+    {
+        "name": "name",
+        "city": "city",
+        "code": "code",
+        "color": "#000000",
+        "record": 
+            {
+                "wins": 0,
+                "losses": 0
+            }
+    },
+    "players":
+    [
+        {
+            "name":
+            {
+                "first": "first",
+                "last": "last"
+            },
+            "status":
+            {
+                "short": 0,
+                "long": "Playing"
+            }
+        }
+    ]
+}

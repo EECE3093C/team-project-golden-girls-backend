@@ -1,0 +1,50 @@
+{
+    "teams":
+    {
+        "home":
+        {
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "color": "#000000",
+            "record": 
+            {
+                "wins": 0,
+                "losses": 0
+            }
+        },
+        "away":
+        {
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "color": "#000000",
+            "record": 
+            {
+                "wins": 0,
+                "losses": 0
+            }
+        }
+    },
+    "stats":
+    {
+        "home":{
+            "games": 0,
+            "avgp": 0,
+            "avgto": 0,
+            "avgst": 0,
+            "avgreb": 0,
+            "fgp": "0%",
+            "twptp": "0%"
+        },
+        "away":{
+            "games": 0,
+            "avgp": 0,
+            "avgto": 0,
+            "avgst": 0,
+            "avgreb": 0,
+            "fgp": "0%",
+            "twptp": "0%"
+        }
+    }
+}

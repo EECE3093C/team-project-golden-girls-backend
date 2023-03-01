@@ -1,0 +1,74 @@
+{
+    "teams":
+    {
+        "home":
+        {
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "color": "#000000",
+            "record": 
+            {
+                "wins": 0,
+                "losses": 0
+            }
+        },
+        "away":
+        {
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "color": "#000000",
+            "record": 
+            {
+                "wins": 0,
+                "losses": 0
+            }
+        }
+    },
+    "games":
+    [
+        {
+            "home":
+            {
+                "team":
+                {
+                    "score": 100,
+                    "win": true
+                },
+                "opponent":
+                {
+                    "name": "name",
+                    "city": "city",
+                    "code": "code",
+                    "score": 100,
+                    "record": 
+                    {
+                        "wins": 0,
+                        "losses": 0
+                    }
+                }
+            },
+            "away":
+            {
+                "team":
+                {
+                    "score": 100,
+                    "win": true
+                },
+                "opponent":
+                {
+                    "name": "name",
+                    "city": "city",
+                    "code": "code",
+                    "score": 100,
+                    "record": 
+                    {
+                        "wins": 0,
+                        "losses": 0
+                    }
+                }
+            }
+        }
+    ]
+}
