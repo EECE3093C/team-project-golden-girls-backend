@@ -43,3 +43,5 @@ For all of the above, you can access the app at `localhost:9000`.
 
 - If you want to run the container in the background, add the `-d` flag
 - Kill the process with `Ctrl-c` (in foreground) or `docker kill oof` (in background)
+
+**Production and development images serve a webpage, testing does not.**
