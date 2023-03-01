@@ -1,20 +1,172 @@
 # team-project-golden-girls-backend
 Backend for obscene odds
 
-See the frontend [here](https://github.com/EECE3093C/team-project-golden-girls).
+See the frontend [here](https://github.com/`EECE3093C/team-project-golden-girls).
 
 ## API 
 
-Needed calls:
-- [ ] games
-- [ ] players
-- [ ] teams
-- [ ] bets
-- [ ] leagues
+These are calls from frontend, NOT to RapidAPI.
 
-| Type | Call | Description |
-| - | - | - |
-| GET | `/api/v1/games` | Get a list of the games|
+### Odds
+
+The odds endpoint returns a list of odds for a given sport.
+
+`GET /api/v1/odds` 
+
+#### Parameters
+
+| Attribute | Type     | Requirement | Notes             |
+|-----------|----------|-------------|-------------------|
+| `sport`   | `string` | optional    | Defaults to `nba` |
+
+#### Example
+
+`GET /api/v1/odds?sport=nba`
+
+```json
+[
+    <insert example>
+]
+```
+
+### Games
+
+The games endpoint returns a list of games for a given sport.
+
+`GET /api/v1/games`
+
+#### Parameters
+
+| Attribute    | Type     | Requirement | Notes             |
+|--------------|----------|-------------|-------------------|
+| `start_date` | `string` | required    | ISO8061 format    |
+| `end_date`   | `string` | required    | ISO8061 format    |
+| `sport`      | `string` | optional    | Defaults to `nba` |
+
+#### Example
+
+`GET /api/v1/games?sport=nba&start_date=2020-01-01&end_date=2020-01-02`
+
+```json
+[
+    <insert example>
+]
+```
+
+### Live
+
+The live endpoint returns a list of live games for a given sport.
+
+`GET /api/v1/live`
+
+#### Parameters
+
+| Attribute | Type     | Requirement | Notes             |
+|-----------|----------|-------------|-------------------|
+| `sport`   | `string` | optional    | Defaults to `nba` |
+
+#### Example
+
+`GET /api/v1/live?sport=nba`
+
+```json
+[
+    <insert example>
+]
+```
+
+### Players
+
+The players endpoint returns a list of players for a given sport.
+
+`GET /api/v1/players`
+
+#### Parameters
+
+| Attribute | Type     | Requirement | Notes             |
+|-----------|----------|-------------|-------------------|
+| `team`    | `string` | required    |                   |
+| `sport`   | `string` | optional    | Defaults to `nba` |
+
+#### Example
+
+`GET /api/v1/players?sport=nba&team=tor`
+
+```json
+[
+    <insert example>
+]
+```
+
+### Matchups
+
+The matchups endpoint returns a list of the last 5 matchups between two teams.
+
+`GET /api/v1/matchups`
+
+#### Parameters
+
+| Attribute | Type     | Requirement | Notes             |
+|-----------|----------|-------------|-------------------|
+| `team1`   | `string` | required    |                   |
+| `team2`   | `string` | required    |                   |
+| `sport`   | `string` | optional    | Defaults to `nba` |
+
+#### Example
+
+`GET /api/v1/matchups?sport=nba&team1=tor&team2=phi`
+
+```json
+[
+    <insert example>
+]
+```
+
+### Previous
+
+The previous endpoint returns a list of the last 10 games for a team.
+
+`GET /api/v1/previous`
+
+#### Parameters
+
+| Attribute | Type     | Requirement | Notes             |
+|-----------|----------|-------------|-------------------|
+| `team`    | `string` | required    |                   |
+| `sport`   | `string` | optional    | Defaults to `nba` |
+
+#### Example
+
+`GET /api/v1/previous?sport=nba&team=tor`
+
+```json
+[
+    <insert example>
+]
+```
+
+### Stats
+
+The stats endpoint returns a list of stats for a team.
+
+`GET /api/v1/stats`
+
+#### Parameters
+
+| Attribute | Type     | Requirement | Notes             |
+|-----------|----------|-------------|-------------------|
+| `team`    | `string` | required    |                   |
+| `sport`   | `string` | optional    | Defaults to `nba` |
+
+#### Example
+
+`GET /api/v1/stats?sport=nba&team=tor`
+
+```json
+[
+    <insert example>
+]
+```
 
 ## Setup
 
