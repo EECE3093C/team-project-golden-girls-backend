@@ -25,7 +25,22 @@ The odds endpoint returns a list of odds for a given sport.
 
 ```json
 [
-    <insert example>
+{
+    "date": "00/00/00",
+    "team":{
+        "teamName": "name",
+        "teamLogo": "https://image.png",
+        "teamScore": 100,
+        "teamColor": "#000000"
+    },
+    "sportsBooks": [
+        {
+            "bookName": "name",
+            "bookLogo": "https://image.png",
+            "odds": "+000"
+        }
+    ]
+}
 ]
 ```
 
@@ -49,7 +64,48 @@ The games endpoint returns a list of games for a given sport.
 
 ```json
 [
-    <insert example>
+{
+    "timeFrame":{   
+        "startDate": "00/00/00",
+        "endDate": "00/01/00"
+    },
+    "games": [
+        {
+            "homeTeam":{
+                "name": "name",
+                "city": "city",
+                "teamColor": "#000000",
+                "logo": "https://image.png",
+                "totalScore": 0,
+                "quarterScores": [],
+                "record": 
+                {
+                    "wins": 0,
+                    "losses": 0
+                },
+                "code": "code"
+            },
+            "awayTeam":{
+                "name": "name",
+                "city": "city",
+                "teamColor": "#000000",
+                "logo": "https://image.png",
+                "totalScore": 0,
+                "quarterScores": [],
+                "record": 
+                {
+                    "wins": 0,
+                    "losses": 0
+                },
+                "code": "code"
+            },
+            "statusLong": "Scheduled",
+            "statusShort": 0,
+            "time": "00:00",
+            "date": "00/00/00"
+        }
+    ]
+}
 ]
 ```
 
@@ -71,7 +127,55 @@ The live endpoint returns a list of live games for a given sport.
 
 ```json
 [
-    <insert example>
+{
+    "timeframe":
+    { 
+        "startDate": "00/00/00",
+        "endDate": "00/01/00"
+    },
+    "games": [
+        {
+            "homeTeam":
+            {
+                "name": "name",
+                "city": "city",
+                "logo": "https://image.png",
+                "totalScore": 0,
+                "quarterScores": [],
+                "record": 
+                {
+                    "wins": 0,
+                    "losses": 0
+                },
+                "code": "code"
+            },
+            "awayTeam": 
+            {
+                "name": "name",
+                "city": "city",
+                "logo": "https://image.png",
+                "totalScore": 0,
+                "quarterScores": [],
+                "record": 
+                {
+                    "wins": 0,
+                    "losses": 0
+                },
+                "code": "code"
+            },
+            "startTime": "00:00",
+            "date": "00/00/00",
+            "gameStatus":
+            {
+                "statusLong": "Scheduled",
+                "statusShort": 0,
+                "gameQuarter": "Q0",
+                "clock": "00:00",
+                "halftime": false
+            }
+        }
+    ]
+}
 ]
 ```
 
@@ -94,7 +198,30 @@ The players endpoint returns a list of players for a given sport.
 
 ```json
 [
-    <insert example>
+{
+    "team":
+    {
+        "name": "name",
+        "city": "city",
+        "code": "code",
+        "color": "#000000"
+    },
+    "players":
+    [
+        {
+            "name":
+            {
+                "first": "first",
+                "last": "last"
+            },
+            "status":
+            {
+                "short": 0,
+                "long": "Playing"
+            }
+        }
+    ]
+}
 ]
 ```
 
@@ -118,7 +245,64 @@ The matchups endpoint returns a list of the last 5 matchups between two teams.
 
 ```json
 [
-    <insert example>
+    {
+    "teams":
+    {
+        "home":
+        {
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "color": "#000000",
+            "record": 
+            {
+                "wins": 0,
+                "losses": 0
+            }
+        },
+        "away":
+        {
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "color": "#000000",
+            "record": 
+            {
+                "wins": 0,
+                "losses": 0
+            }
+        }
+    },
+    "matchups":
+    [
+        {
+            "teams":
+            {
+                "home":{
+                    "name": "name",
+                    "city": "city",
+                    "code": "code",
+                    "score": 100,
+                    "win": true
+                },
+                "away":
+                {
+                    "name": "name",
+                    "city": "city",
+                    "code": "code",
+                    "score": 100,
+                    "win": false
+                }
+            },
+            "date": "00/00/00"
+        }
+    ],
+    "series":
+    {
+        "home": 0,
+        "away": 0
+    }
+}
 ]
 ```
 
@@ -141,7 +325,80 @@ The previous endpoint returns a list of the last 10 games for a team.
 
 ```json
 [
-    <insert example>
+    {
+    "teams":
+    {
+        "home":
+        {
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "color": "#000000",
+            "record": 
+            {
+                "wins": 0,
+                "losses": 0
+            }
+        },
+        "away":
+        {
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "color": "#000000",
+            "record": 
+            {
+                "wins": 0,
+                "losses": 0
+            }
+        }
+    },
+    "games":
+    [
+        {
+            "home":
+            {
+                "team":
+                {
+                    "score": 100,
+                    "win": true
+                },
+                "opponent":
+                {
+                    "name": "name",
+                    "city": "city",
+                    "code": "code",
+                    "score": 100,
+                    "record": 
+                    {
+                        "wins": 0,
+                        "losses": 0
+                    }
+                }
+            },
+            "away":
+            {
+                "team":
+                {
+                    "score": 100,
+                    "win": true
+                },
+                "opponent":
+                {
+                    "name": "name",
+                    "city": "city",
+                    "code": "code",
+                    "score": 100,
+                    "record": 
+                    {
+                        "wins": 0,
+                        "losses": 0
+                    }
+                }
+            }
+        }
+    ]
+}
 ]
 ```
 
@@ -164,7 +421,56 @@ The stats endpoint returns a list of stats for a team.
 
 ```json
 [
-    <insert example>
+    {
+    "teams":
+    {
+        "home":
+        {
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "color": "#000000",
+            "record": 
+            {
+                "wins": 0,
+                "losses": 0
+            }
+        },
+        "away":
+        {
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "color": "#000000",
+            "record": 
+            {
+                "wins": 0,
+                "losses": 0
+            }
+        }
+    },
+    "stats":
+    {
+        "home":{
+            "games": 0,
+            "avgp": 0,
+            "avgto": 0,
+            "avgst": 0,
+            "avgreb": 0,
+            "fgp": "0%",
+            "twptp": "0%"
+        },
+        "away":{
+            "games": 0,
+            "avgp": 0,
+            "avgto": 0,
+            "avgst": 0,
+            "avgreb": 0,
+            "fgp": "0%",
+            "twptp": "0%"
+        }
+    }
+}
 ]
 ```
 
