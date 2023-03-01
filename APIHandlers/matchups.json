@@ -1,0 +1,58 @@
+{
+    "teams":
+    {
+        "home":
+        {
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "color": "#000000",
+            "record": 
+            {
+                "wins": 0,
+                "losses": 0
+            }
+        },
+        "away":
+        {
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "color": "#000000",
+            "record": 
+            {
+                "wins": 0,
+                "losses": 0
+            }
+        }
+    },
+    "matchups":
+    [
+        {
+            "teams":
+            {
+                "home":{
+                    "name": "name",
+                    "city": "city",
+                    "code": "code",
+                    "score": 100,
+                    "win": true
+                },
+                "away":
+                {
+                    "name": "name",
+                    "city": "city",
+                    "code": "code",
+                    "score": 100,
+                    "win": false
+                }
+            },
+            "date": "00/00/00"
+        }
+    ],
+    "series":
+    {
+        "home": 0,
+        "away": 0
+    }
+}

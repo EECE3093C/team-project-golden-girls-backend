@@ -1,0 +1,42 @@
+{
+    "timeFrame":{   
+        "startDate": "00/00/00",
+        "endDate": "00/01/00"
+    },
+    "games": [
+        {
+            "homeTeam":{
+                "name": "name",
+                "city": "city",
+                "teamColor": "#000000",
+                "logo": "https://image.png",
+                "totalScore": 0,
+                "quarterScores": [],
+                "record": 
+                {
+                    "wins": 0,
+                    "losses": 0
+                },
+                "code": "code"
+            },
+            "awayTeam":{
+                "name": "name",
+                "city": "city",
+                "teamColor": "#000000",
+                "logo": "https://image.png",
+                "totalScore": 0,
+                "quarterScores": [],
+                "record": 
+                {
+                    "wins": 0,
+                    "losses": 0
+                },
+                "code": "code"
+            },
+            "statusLong": "Scheduled",
+            "statusShort": 0,
+            "time": "00:00",
+            "date": "00/00/00"
+        }
+    ]
+}
