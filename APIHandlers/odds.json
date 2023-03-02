@@ -1,0 +1,16 @@
+{
+    "date": "00/00/00",
+    "team":{
+        "teamName": "name",
+        "teamLogo": "https://image.png",
+        "teamScore": 100,
+        "teamColor": "#000000"
+    },
+    "sportsBooks": [
+        {
+            "bookName": "name",
+            "bookLogo": "https://image.png",
+            "odds": "+000"
+        }
+    ]
+}
