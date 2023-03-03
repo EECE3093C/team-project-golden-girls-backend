@@ -24,6 +24,8 @@
   },
   "homepage": "https://github.com/EECE3093C/team-project-golden-girls-backend#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "request": "^2.88.2",
+    "requests": "^0.3.0"
   }
 }
