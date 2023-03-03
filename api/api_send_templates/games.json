@@ -5,6 +5,7 @@
     },
     "games": [
         {
+            "id": 0,   
             "homeTeam":{
                 "name": "name",
                 "city": "city",
