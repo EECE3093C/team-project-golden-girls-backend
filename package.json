@@ -22,10 +22,9 @@
   "bugs": {
     "url": "https://github.com/EECE3093C/team-project-golden-girls-backend/issues"
   },
-  "homepage": "https://github.com/EECE3093C/team-project-golden-girls-backend#readme",
+  "homepage": "https://github.com/EECE3093C/team-project-golden-girls-backend",
   "dependencies": {
     "express": "^4.18.2",
-    "request": "^2.88.2",
-    "requests": "^0.3.0"
+    "request": "^2.88.2"
   }
 }

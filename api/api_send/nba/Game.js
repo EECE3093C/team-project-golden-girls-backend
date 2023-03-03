@@ -20,7 +20,7 @@
 const fs = require('fs');
 const tools = require('../../tools.js');
 
-function getNBAData(){
+function getNBAData() {
     let date_ob = new Date();
     let season = tools.getSeason(date_ob);
     let response, standings;
@@ -29,8 +29,8 @@ function getNBAData(){
     /** 
      * directory locations of the JSON files containg the game and standing data 
      */
-    let ggDir = "C:/ObsceneOddsAPIData/NBA/Games";
-    let gsDir = `C:/ObsceneOddsAPIData/NBA/Standings/${season}`;
+    let ggDir = "data/NBA/games";
+    let gsDir = `data/NBA/standings/${season}`;
 
     /** 
      * directory location of the JSON template to send to front end
@@ -53,11 +53,10 @@ function getNBAData(){
     /**
      * retrieves the games send_api_template for games and stores it in the response variable.
      */
-
-    try{
+    try {
         response = JSON.parse(fs.readFileSync(dDir + 'games.json'))
         standings = JSON.parse(fs.readFileSync(`${gsDir}/${dateRange[0]}.json`))// TODO: add this asynchronously below
-    } catch (err){
+    } catch (err) {
         console.log(err);
     }
 
@@ -73,8 +72,8 @@ function getNBAData(){
      */
 
     dateRange.forEach(date => {
-        fs.readFile(`${ggDir}/${date}.json`, function(err, data){
-            if(err) throw err;
+        fs.readFile(`${ggDir}/${date}.json`, function (err, data) {
+            if (err) throw err;
             let games = JSON.parse(data);
 
             /**  
@@ -82,7 +81,7 @@ function getNBAData(){
             */
             let bGameOb = JSON.parse(JSON.stringify(response.games[0]));
 
-            
+
             for (let i = 0; i < games.response.length; i++) {
                 let game = games.response[i];
                 let tempbGameOb = JSON.parse(JSON.stringify(bGameOb));
@@ -93,7 +92,7 @@ function getNBAData(){
                 tempbGameOb.homeTeam.logo = game.teams.home.logo;
                 tempbGameOb.homeTeam.totalScore = game.scores.home.points;
                 tempbGameOb.homeTeam.code = game.teams.home.code;
-                tempbGameOb.homeTeam.teamColor = tools.lookForColor(game.teams.home.name, JSON.parse(fs.readFileSync('C:/Projects/team-project-golden-girls-backend/assets/colors.json')));
+                tempbGameOb.homeTeam.teamColor = tools.lookForColor(game.teams.home.name, JSON.parse(fs.readFileSync('assets/colors.json')));
                 tempbGameOb.homeTeam.quarterScores = game.scores.home.linescore;
                 tempbGameOb.homeTeam.record = tools.lookForTeamRecord(game.teams.home.name, standings);
 
@@ -103,7 +102,7 @@ function getNBAData(){
                 tempbGameOb.awayTeam.logo = game.teams.visitors.logo;
                 tempbGameOb.awayTeam.totalScore = game.scores.visitors.points;
                 tempbGameOb.awayTeam.code = game.teams.visitors.code;
-                tempbGameOb.awayTeam.teamColor = tools.lookForColor(game.teams.visitors.name, JSON.parse(fs.readFileSync('C:/Projects/team-project-golden-girls-backend/assets/colors.json')));
+                tempbGameOb.awayTeam.teamColor = tools.lookForColor(game.teams.visitors.name, JSON.parse(fs.readFileSync('assets/colors.json')));
                 tempbGameOb.awayTeam.quarterScores = game.scores.visitors.linescore;
                 tempbGameOb.awayTeam.record = tools.lookForTeamRecord(game.teams.visitors.name, standings);
 
@@ -133,25 +132,22 @@ function getNBAData(){
                 /**
                  * overwrites the original template with the first item and then appends
                  * the remaining items to the end of the games list.
-                 */            
+                 */
                 if (i == 0) {
                     response.games[i] = tempbGameOb;
                 }
-                else{
+                else {
                     response.games.push(tempbGameOb);
                 };
-                
+
             };
             /**
              * final object to send is stored in the response variable.
              * logged to the console for now. To be sent to the front end.
              */
-            
-            
-
-        });        
+        });
     });
     return response;
 }
 
-console.log(getNBAData());
+module.exports = { getNBAData };
