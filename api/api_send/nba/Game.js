@@ -95,6 +95,7 @@ function getNBAData() {
             tempbGameOb.homeTeam.teamColor = tools.lookForColor(game.teams.home.name, JSON.parse(fs.readFileSync('assets/colors.json')));
             tempbGameOb.homeTeam.quarterScores = game.scores.home.linescore;
             tempbGameOb.homeTeam.record = tools.lookForTeamRecord(game.teams.home.name, standings);
+            console.log(tempbGameOb.homeTeam.teamColor);
 
             //Away team parse
             tempbGameOb.awayTeam.name = game.teams.visitors.nickname;

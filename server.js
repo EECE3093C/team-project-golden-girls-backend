@@ -1,9 +1,12 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const port = process.env.PORT || 9000;
 const gamesRetrieve = require('./api/api_retrieve/nba/Game.js');
 const gamesSend = require('./api/api_send/nba/Game.js');
 const standingsRetrieve = require('./api/api_retrieve/nba/Standings.js');
+
+app.use(cors());
 
 console.log("Making initial API calls...")
 // make initial api calls
@@ -27,6 +30,6 @@ app.get(baseRoute + 'games', (req, res) => {
         const sport = req.params.sport;
     }
     games = gamesSend.getNBAData();
-    res.send({ express: games });
+    res.send(games);
 });
 
