@@ -1,25 +1,35 @@
 /**
- * Description process to parse through the stored 
- * JSON files from API-NBA and pull data to build 
- * JSON object being sent to front end.
+ * File: Game.js
+ * Description: The Games.js file contains a process for parsing stored JSON files from the
+ *  API-NBA and building a JSON object to be sent to the front end. It retrieves data on games
+ *  and standings, creates a range of dates for the games being retrieved, sets the time frame
+ *  for the first and last values of the date range, and loops through all the dates in the
+ *  range to assign related information to the JSON object. The process uses several tools and
+ *  functions to parse and organize the data, including removing words from strings, looking
+ *  up team colors and records, and formatting dates and times.
+ * 
+ * @author: [Nate Louder]
+ * @date: [Date Created: 03/02/23 / Modified: 03/03/23]
  * 
  * HISTORY:
- * 3/2/23, Nate Louder(nate-dev): Created file. Setup process to parse through the stored 
- * JSON files from API-NBA and pull data to build JSON object being sent to front end.
- * 
- * 3/3/23, Nate Louder(nate-dev): finalized relationships between pull and send files.
+ *  - 3/2/23, Nate Louder(nate-dev): Created file. Setup process to parse through the stored 
+ *  JSON files from API-NBA and pull data to build JSON object being sent to front end.
+ *  - 3/3/23, Nate Louder(nate-dev): finalized relationships between pull and send files.
  */
 
 const fs = require('fs');
-const tools = require('../tools.js');
+const tools = require('../../tools.js');
+
 let date_ob = new Date();
-let response;
+let season = tools.getSeason(date_ob);
+let response, standings;
 let day, month = "";
 
 /** 
- * directory location of the JSON files containg the game data 
+ * directory locations of the JSON files containg the game and standing data 
  */
 let ggDir = "C:/ObsceneOddsAPIData/NBA/Games";
+let gsDir = `C:/ObsceneOddsAPIData/NBA/Standings/${season}`;
 
 /** 
  * directory location of the JSON template to send to front end
@@ -42,8 +52,10 @@ for (let i = 0; i < 1; i++) {
 /**
  * retrieves the games send_api_template for games and stores it in the response variable.
  */
+
 try{
     response = JSON.parse(fs.readFileSync(dDir + 'games.json'))
+    standings = JSON.parse(fs.readFileSync(`${gsDir}/${dateRange[0]}.json`))// TODO: add this asynchronously below
 } catch (err){
     console.log(err);
 }
@@ -82,6 +94,7 @@ dateRange.forEach(date => {
             tempbGameOb.homeTeam.code = game.teams.home.code;
             tempbGameOb.homeTeam.teamColor = tools.lookForColor(game.teams.home.name, JSON.parse(fs.readFileSync('C:/Projects/team-project-golden-girls-backend/assets/colors.json')));
             tempbGameOb.homeTeam.quarterScores = game.scores.home.linescore;
+            tempbGameOb.homeTeam.record = tools.lookForTeamRecord(game.teams.home.name, standings);
 
             //Away team parse
             tempbGameOb.awayTeam.name = game.teams.visitors.nickname;
@@ -91,6 +104,7 @@ dateRange.forEach(date => {
             tempbGameOb.awayTeam.code = game.teams.visitors.code;
             tempbGameOb.awayTeam.teamColor = tools.lookForColor(game.teams.visitors.name, JSON.parse(fs.readFileSync('C:/Projects/team-project-golden-girls-backend/assets/colors.json')));
             tempbGameOb.awayTeam.quarterScores = game.scores.visitors.linescore;
+            tempbGameOb.awayTeam.record = tools.lookForTeamRecord(game.teams.visitors.name, standings);
 
             //Other parse
             
@@ -126,7 +140,7 @@ dateRange.forEach(date => {
          * final object to send is stored in the response variable.
          * logged to the console for now. To be sent to the front end.
          */
-        console.log(response);
+        console.log(response.games[0].homeTeam.name, response.games[0].homeTeam.record);
 
     });        
 });

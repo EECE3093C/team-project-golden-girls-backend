@@ -60,11 +60,12 @@ dates.forEach(tempdate => {
   /**
    * checks if files exist before calling for their data.
    */
-  if(!fs.existsSync('/ObsceneOddsAPIData/NBA/Games/${tempdate}.json')){
+  if(!fs.existsSync(`/ObsceneOddsAPIData/NBA/Games/${tempdate}.json`)){
     request(options, function (error, response, body) {
       if (error) throw new Error(error);
       let data = JSON.stringify(JSON.parse(body), null, 2);
-    
+      
+      // TODO: add check for exisiting directory
       fs.promises.mkdir('/ObsceneOddsAPIData/NBA/Games', { recursive: true }, (err) => {
         if (err) throw err;
       });
