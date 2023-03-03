@@ -13,7 +13,7 @@ function getStandings() {
   let date_ob = new Date()
   const season = tools.getSeason(date_ob);
 
-  date_ob.setDate(date_ob.getDate() - 1);
+  date_ob.setDate(date_ob.getDate());
 
   let day = ("0" + (date_ob.getDate())).slice(-2);
   let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
@@ -66,5 +66,7 @@ function getStandings() {
   }
 
 }
+
+getStandings();
 
 module.exports = { getStandings };

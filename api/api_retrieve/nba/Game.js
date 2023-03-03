@@ -80,4 +80,6 @@ function getGames(number_of_days = 2) {
   console.log(counter, " files were created");
 }
 
+getGames();
+
 module.exports = { getGames };
