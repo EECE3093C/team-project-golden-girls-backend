@@ -24,7 +24,7 @@ let ggDir = "C:/ObsceneOddsAPIData/NBA/Games";
 /** 
  * directory location of the JSON template to send to front end
  */
-let dDir = "api_send_templates/";
+let dDir = "api/api_send_templates/";
 
 const dateRange = [];
 
