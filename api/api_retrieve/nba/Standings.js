@@ -14,9 +14,9 @@ function getStandings() {
   let date_ob = new Date()
   const season = tools.getSeason(date_ob);
 
-    /**
-  * define the paths used to retrieve data when building JSON object.
-  */
+  /**
+* define the paths used to retrieve data when building JSON object.
+*/
   const standingsSendPath = `data/NBA/standings/${season}/`;
 
   let day = ("0" + (date_ob.getUTCDate())).slice(-2);
@@ -36,7 +36,7 @@ function getStandings() {
     url: 'https://api-nba-v1.p.rapidapi.com/standings',
     qs: { league: 'standard', season: season },
     headers: {
-      'X-RapidAPI-Key': '0a2ff28718mshfc1de4a61e5d512p10d91ajsndee4d0f92b5d',
+      'X-RapidAPI-Key': 'process.env.RAPID_API_KEY',
       'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com',
       useQueryString: true
     }
@@ -57,7 +57,7 @@ function getStandings() {
     request(options, async function (error, response, body) {
       if (error) throw new Error(error);
       let data = JSON.stringify(JSON.parse(body), null, 2);
-  
+
       try {
         await fs.promises.mkdir(standingsSendPath, { recursive: true });
         fs.writeFile(`${standingsSendPath}${currentDate}.json`, data, function (err) {

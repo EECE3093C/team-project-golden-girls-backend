@@ -104,3 +104,6 @@ dist
 .tern-port
 
 data
+
+.DS_Store
+**/.DS_Store

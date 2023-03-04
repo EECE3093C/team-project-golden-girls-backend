@@ -11,7 +11,7 @@ function getGames(number_of_days = 2) {
   /**
   * define the paths used to retrieve data when building JSON object.
   */
- const gamesSendPath = "data/NBA/games/";
+  const gamesSendPath = "data/NBA/games/";
 
   /**  
    * retrieves a list of the next "number_of_days" dates (yyyy-mm-dd) including today, to be used as a filter when making the API call. Dates are in UTC timezone.
@@ -43,7 +43,7 @@ function getGames(number_of_days = 2) {
       url: 'https://api-nba-v1.p.rapidapi.com/games',
       qs: { date: tempdate },
       headers: {
-        'X-RapidAPI-Key': '0a2ff28718mshfc1de4a61e5d512p10d91ajsndee4d0f92b5d',
+        'X-RapidAPI-Key': 'process.env.RAPID_API_KEY',
         'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com',
         useQueryString: true
       }
@@ -64,7 +64,7 @@ function getGames(number_of_days = 2) {
       request(options, async function (error, response, body) {
         if (error) throw new Error(error);
         let data = JSON.stringify(JSON.parse(body), null, 2);
-    
+
         try {
           await fs.promises.mkdir(gamesSendPath, { recursive: true });
           fs.writeFile(`${gamesSendPath}${tempdate}.json`, data, function (err) {
@@ -74,7 +74,7 @@ function getGames(number_of_days = 2) {
           throw err;
         }
       });
-    }     
+    }
   });
 }
 
