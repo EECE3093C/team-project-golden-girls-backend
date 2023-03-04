@@ -1,5 +1,4 @@
 {
-
     "Atlanta Hawks": {
         "primary": "#E03A3E",
         "secondary": "#C1D32F"
@@ -110,14 +109,14 @@
     },
     "Washington Wizards": {
         "primary" : "#002D62",
-        "secondary": "E31837"
+        "secondary": "#E31837"
     },
     "Toronto Raptors": {
         "primary" : "#CE1141",
-        "secondary": "000000"
+        "secondary": "#000000"
     },
     "Utah Jazz": {
-        "primary" : "002B5C",
-        "secondary": "00471B"
+        "primary" : "#002B5C",
+        "secondary": "#00471B"
     }
 }  
