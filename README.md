@@ -485,7 +485,7 @@ There are 3 different dockerfiles:
 ### Development
 
 1. Build the docker image with `docker build -f Dockerfile.dev -t oo-backend .`
-2. Run the image with `docker run --rm -p 9000:9000 --mount type=bind,source="$(pwd)",target="$(pwd)" -w "$(pwd)" --name oob oo-backend`
+2. Run the image with `docker run --rm -p 9000:9000 --mount type=bind,source="$(pwd)",target="/work" -w "/work" --name oob oo-backend`
 
 ### Production
 
