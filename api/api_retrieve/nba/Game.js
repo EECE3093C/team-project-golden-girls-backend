@@ -4,22 +4,25 @@
  * 3/3/23, Nate Louder(nate-dev): modified the method of getting dates and creating JSON files to get the next 7 days and check if files exist before calling for their data.
  */
 
-const express = require('express');
 const request = require('request');
 const fs = require('fs');
 
 function getGames(number_of_days = 2) {
-  let counter = 0;
+  /**
+  * define the paths used to retrieve data when building JSON object.
+  */
+ const gamesSendPath = "data/NBA/games/";
+
   /**  
-   * retrieves a list of yesterday and the next 7 dates (yyyy-mm-dd) to be used as a filter when making the API call
+   * retrieves a list of the next "number_of_days" dates (yyyy-mm-dd) including today, to be used as a filter when making the API call. Dates are in UTC timezone.
   */
   let dates = [];
   let date = new Date();
 
-  for (let i = 0; i <= number_of_days; i++) {
-    let day = ("0" + (date.getDate())).slice(-2);
-    let month = ("0" + (date.getMonth() + 1)).slice(-2);
-    let fullDate = `${date.getFullYear()}-${month}-${day}`;
+  for (let i = 0; i < number_of_days; i++) {
+    let day = ("0" + (date.getUTCDate())).slice(-2);
+    let month = ("0" + (date.getUTCMonth() + 1)).slice(-2);
+    let fullDate = `${date.getUTCFullYear()}-${month}-${day}`;
     dates.push(fullDate);
     date.setDate(date.getDate() + 1);
   }
@@ -57,27 +60,22 @@ function getGames(number_of_days = 2) {
     /**
      * checks if files exist before calling for their data.
      */
-    let path = "data/NBA/Games/";
-    if (!fs.existsSync(`${path}${tempdate}.json`)) {
-      request(options, function (error, response, body) {
+    if (!fs.existsSync(`${gamesSendPath}${tempdate}.json`)) {
+      request(options, async function (error, response, body) {
         if (error) throw new Error(error);
         let data = JSON.stringify(JSON.parse(body), null, 2);
-
-        // add check for exisiting directory
-        fs.promises.mkdir('data/NBA/Games', { recursive: true }, (err) => {
-          if (err) throw err;
-        });
-
-        // create file
-        fs.writeFile(`${path}${tempdate}.json`, data, function (err) {
-          if (err) throw err;
-          counter = counter + 1;
-        })
+    
+        try {
+          await fs.promises.mkdir(gamesSendPath, { recursive: true });
+          fs.writeFile(`${gamesSendPath}${tempdate}.json`, data, function (err) {
+            if (err) throw err;
+          });
+        } catch (err) {
+          throw err;
+        }
       });
-
-    }
+    }     
   });
-  console.log(counter, " files were created");
 }
 
 getGames();

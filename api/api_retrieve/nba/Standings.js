@@ -10,14 +10,18 @@ const fs = require('fs');
 const tools = require('../../tools.js');
 
 function getStandings() {
+
   let date_ob = new Date()
   const season = tools.getSeason(date_ob);
 
-  date_ob.setDate(date_ob.getDate());
+    /**
+  * define the paths used to retrieve data when building JSON object.
+  */
+  const standingsSendPath = `data/NBA/standings/${season}/`;
 
-  let day = ("0" + (date_ob.getDate())).slice(-2);
-  let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-  let currentDate = `${date_ob.getFullYear()}-${month}-${day}`;
+  let day = ("0" + (date_ob.getUTCDate())).slice(-2);
+  let month = ("0" + (date_ob.getUTCMonth() + 1)).slice(-2);
+  let currentDate = `${date_ob.getUTCFullYear()}-${month}-${day}`;
 
 
   /**
@@ -49,20 +53,20 @@ function getStandings() {
   /**
    * checks if files exist before calling for their data.
    */
-  if (!fs.existsSync(`data/NBA/standings/${season}/${currentDate}.json`)) {
-    request(options, function (error, response, body) {
+  if (!fs.existsSync(`${standingsSendPath}${currentDate}.json`)) {
+    request(options, async function (error, response, body) {
       if (error) throw new Error(error);
       let data = JSON.stringify(JSON.parse(body), null, 2);
-
-      //
-      fs.promises.mkdir(`data/NBA/standings/${season}/`, { recursive: true }, (err) => {
-        if (err) throw err;
-      });
-      fs.writeFile(`data/NBA/standings/${season}/${currentDate}.json`, data, function (err) {
-        if (err) throw err;
-      })
+  
+      try {
+        await fs.promises.mkdir(standingsSendPath, { recursive: true });
+        fs.writeFile(`${standingsSendPath}${currentDate}.json`, data, function (err) {
+          if (err) throw err;
+        });
+      } catch (err) {
+        throw err;
+      }
     });
-
   }
 
 }

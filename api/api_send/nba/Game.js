@@ -18,43 +18,47 @@
  */
 
 const fs = require('fs');
+const { getGames } = require('../../api_retrieve/nba/Game.js');
 const tools = require('../../tools.js');
  
 
-function getNBAData() {
+function getNBAData(number_of_days=2) {
+    
+    /**
+     * create date object used to name retrieve dated files and information
+     */
+    let date_ob = new Date()
+    date_ob.setUTCDate(date_ob.getUTCDate());
+    let season = tools.getSeason(date_ob);
+    let response, standings;
+
     /**
      * define the paths used to retrieve data when building JSON object.
     */
-    const gamesStorePath = "data/NBA/Games"; //path to the directory where game data is stored
+    const gamesStorePath = `data/NBA/games`; //path to the directory where game data is stored
     const standingsStorePath = `data/NBA/standings/${season}`; //path to the directory where standings data is stored
-    const teamColorsFilePath = 'assets/colors.json'; //path to file containg the NBA team colors
-    
-    
-    let date_ob = new Date()
-    date_ob.setDate(date_ob.getDate() + 1);
-    let season = tools.getSeason(date_ob);
-    let response, standings;
-    let day, month = "";
-    
-    const dateRange = [];
+    const teamColorsFilePath = `assets/colors.json`; //path to file containg the NBA team colors
+    const gameTemplatePath = `api/api_send_templates/games.json` //path to file containg the JSON template for games object
 
     /**
      * create a range of dates for the games being retrieved.
      */
-    for (let i = 0; i < 1; i++) {
-        day = ("0" + (date_ob.getDate() - 1)).slice(-2);
-        month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-        dateRange.push(`${date_ob.getFullYear()}-${month}-${day}`);
+    let day, month = "";
+    const dateRange = [];
 
-        date_ob.setDate(date_ob.getDate() + 1);
+    for (let i = 0; i < number_of_days; i++) {
+        day = ("0" + date_ob.getUTCDate()).slice(-2);
+        month = ("0" + (date_ob.getUTCMonth() + 1)).slice(-2);
+        dateRange.push(`${date_ob.getUTCFullYear()}-${month}-${day}`);
+        date_ob = new Date(date_ob.getTime() + 86400000); // add 24 hours in milliseconds
     }
 
     /**
      * retrieves the games send_api_template for games and stores it in the response variable.
      */
     try {
-        response = JSON.parse(fs.readFileSync(dDir + 'games.json'))
-        standings = JSON.parse(fs.readFileSync(`${standingsStorePath}/${dateRange[0]}.json`))// TODO: add this asynchronously below
+        response = JSON.parse(fs.readFileSync(gameTemplatePath))
+        standings = JSON.parse(fs.readFileSync(`${standingsStorePath}/${dateRange[0]}.json`))
     } catch (err) {
         console.log(err);
     }
@@ -71,14 +75,13 @@ function getNBAData() {
      */
 
     dateRange.forEach(date => {
-        data = fs.readFileSync(`${gamesStorePath}/${date}.json`)
+        let data = fs.readFileSync(`${gamesStorePath}/${date}.json`)
         let games = JSON.parse(data);
 
         /**  
          * build game object will contain the info of each game and be add added to the list of games after each one is built.
         */
         let bGameOb = JSON.parse(JSON.stringify(response.games[0]));
-
 
         for (let i = 0; i < games.response.length; i++) {
             let game = games.response[i];
@@ -93,7 +96,6 @@ function getNBAData() {
             tempbGameOb.homeTeam.teamColor = tools.lookForColor(game.teams.home.name, JSON.parse(fs.readFileSync(teamColorsFilePath)));
             tempbGameOb.homeTeam.quarterScores = game.scores.home.linescore;
             tempbGameOb.homeTeam.record = tools.lookForTeamRecord(game.teams.home.name, standings);
-            console.log(tempbGameOb.homeTeam.teamColor);
 
             //Away team parse
             tempbGameOb.awayTeam.name = game.teams.visitors.nickname;
@@ -118,11 +120,11 @@ function getNBAData() {
             const utcTime = new Date(game.date.start)
             const options = { month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
             const dateString = utcTime.toLocaleString('en-US', options);
-            tempbGameOb.date = dateString.split(', ')[0] + " ETC";
+            tempbGameOb.date = dateString.split(', ')[0];
             tempbGameOb.time = dateString.split(', ')[1] + " ETC";
 
             /**
-             * status long can be one of the following: Scheduled, Started, Finished
+             * status long can be one of the following: Not Started, live, Finished
              * status short can be one of the following: 1, 2, 3
              */
             tempbGameOb.statusLong = game.status.long;
@@ -140,14 +142,8 @@ function getNBAData() {
             };
 
         };
-        /**
-         * final object to send is stored in the response variable.
-         * logged to the console for now. To be sent to the front end.
-         */
-        
     });
-    return response;
+    return response; //return the response object to be sent to front end
 }
-
 
 module.exports = { getNBAData };
