@@ -1,10 +1,11 @@
 {
     "timeFrame":{   
-        "startDate": "00/00/00",
-        "endDate": "00/01/00"
+        "startDate": "0000-00-00",
+        "endDate": "0000-00-00"
     },
     "games": [
         {
+            "id": 0,   
             "homeTeam":{
                 "name": "name",
                 "city": "city",

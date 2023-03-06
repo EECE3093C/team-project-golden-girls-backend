@@ -1,11 +1,7 @@
 {
-    "timeframe":
-    { 
-        "startDate": "00/00/00",
-        "endDate": "00/01/00"
-    },
     "games": [
         {
+            "id": "id",
             "homeTeam":
             {
                 "name": "name",
@@ -35,6 +31,7 @@
                 "code": "code"
             },
             "startTime": "00:00",
+            "endTime": "00:00",
             "date": "00/00/00",
             "gameStatus":
             {

@@ -128,13 +128,9 @@ The live endpoint returns a list of live games for a given sport.
 ```json
 [
 {
-    "timeframe":
-    { 
-        "startDate": "00/00/00",
-        "endDate": "00/01/00"
-    },
     "games": [
         {
+            "id": "id",
             "homeTeam":
             {
                 "name": "name",
@@ -164,6 +160,7 @@ The live endpoint returns a list of live games for a given sport.
                 "code": "code"
             },
             "startTime": "00:00",
+            "endTime": "00:00",
             "date": "00/00/00",
             "gameStatus":
             {
@@ -485,7 +482,7 @@ There are 3 different dockerfiles:
 ### Development
 
 1. Build the docker image with `docker build -f Dockerfile.dev -t oo-backend .`
-2. Run the image with `docker run --rm -p 9000:9000 --mount type=bind,source="$(pwd)",target="$(pwd)" -w "$(pwd)" --name oob oo-backend`
+2. Run the image with `docker run --rm -p 9000:9000 --mount type=bind,source="$(pwd)",target="/work" -w "/work" --name oob oo-backend`
 
 ### Production
 
@@ -503,3 +500,24 @@ For all of the above, you can access the app at `localhost:9000`.
 - Kill the process with `Ctrl-c` (in foreground) or `docker kill oof` (in background)
 
 **Production and development images serve a webpage, testing does not.**
+
+## Documentation
+
+Documentation for indavidual files will be written as comments within the specified file and will be later combined into a formal documentation of the entire program. Commits pertaining to improving file documentation or README improvements can be linked to issue **#33** [Improve Backend Document Comments](https://github.com/EECE3093C/team-project-golden-girls-backend/issues/33). Be sure to include the file(s) that were changed in the comment. Example commit message `made improvements to <filename>.js comment documentation`.
+### Header
+Process files will contain a header comment that contains useful information regarding the contents and history of the file. A template to be used for the header can be found below.
+
+```js
+/**
+ * File: <file name>.js
+ * Description: <brief description of the file purpose>
+ * 
+ * @author: [<author full name>]
+ * @date: [Date Created: <file creation date mm/dd/yy> / Modified: <file
+ * modified date mm/dd/yy>]
+ * 
+ * HISTORY:
+ *  - <date mm/dd/yy>, <Name>(<branch used for change>): Created file.<Anyother
+ * changes or immprovements made>
+ */
+```
