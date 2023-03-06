@@ -43,4 +43,3 @@ app.get(baseRoute + 'live', (req, res) => {
     scores = scoresSend.sendNBAScores();
     res.send(scores);
 });
-

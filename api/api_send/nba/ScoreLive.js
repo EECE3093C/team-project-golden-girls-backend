@@ -104,8 +104,11 @@ function sendNBAScores(){
          * status long can be one of the following: Not Started, live, Finished
          * status short can be one of the following: 1, 2, 3
          */
-        tempbGameOb.statusLong = game.status.long;
-        tempbGameOb.statusShort = game.status.short;
+        tempbGameOb.gameStatus.statusLong = game.status.long;
+        tempbGameOb.gameStatus.statusShort = game.status.short;
+        tempbGameOb.gameStatus.gameQuarter = game.periods.current;
+        tempbGameOb.gameStatus.clock = game.status.clock;
+        tempbGameOb.gameStatus.halftime = game.status.halftime;
 
         /**
          * overwrites the original template with the first item and then appends
