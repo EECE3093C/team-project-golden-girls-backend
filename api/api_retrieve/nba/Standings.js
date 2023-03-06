@@ -8,6 +8,8 @@ const express = require('express');
 const request = require('request');
 const fs = require('fs');
 const tools = require('../../tools.js');
+const dotenv = require('dotenv');
+dotenv.config();
 
 function getStandings() {
 
@@ -36,7 +38,7 @@ function getStandings() {
     url: 'https://api-nba-v1.p.rapidapi.com/standings',
     qs: { league: 'standard', season: season },
     headers: {
-      'X-RapidAPI-Key': 'process.env.RAPID_API_KEY',
+      'X-RapidAPI-Key': process.env.RAPID_API_KEY,
       'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com',
       useQueryString: true
     }

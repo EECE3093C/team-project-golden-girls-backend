@@ -6,6 +6,8 @@
 
 const request = require('request');
 const fs = require('fs');
+const dotenv = require('dotenv');
+dotenv.config();
 
 function getGames(number_of_days = 2) {
   /**
@@ -43,7 +45,7 @@ function getGames(number_of_days = 2) {
       url: 'https://api-nba-v1.p.rapidapi.com/games',
       qs: { date: tempdate },
       headers: {
-        'X-RapidAPI-Key': 'process.env.RAPID_API_KEY',
+        'X-RapidAPI-Key': process.env.RAPID_API_KEY,
         'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com',
         useQueryString: true
       }
