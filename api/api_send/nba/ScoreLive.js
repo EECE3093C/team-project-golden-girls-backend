@@ -122,8 +122,6 @@ function sendNBAScores(){
     return response; //return the response object to be sent to front end
 }
 
-console.log(sendNBAScores().games[0].gameStatus, sendNBAScores().games[0].awayTeam)
-
 module.exports = {
     sendNBAScores
 }
