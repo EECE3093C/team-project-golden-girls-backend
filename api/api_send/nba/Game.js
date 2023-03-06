@@ -18,11 +18,10 @@
  */
 
 const fs = require('fs');
-const { getGames } = require('../../api_retrieve/nba/Game.js');
 const tools = require('../../tools.js');
  
 
-function getNBAData(number_of_days=2) {
+function sendNBAGames(number_of_days=2) {
     
     /**
      * create date object used to name retrieve dated files and information
@@ -146,4 +145,4 @@ function getNBAData(number_of_days=2) {
     return response; //return the response object to be sent to front end
 }
 
-module.exports = { getNBAData };
+module.exports = { sendNBAGames };

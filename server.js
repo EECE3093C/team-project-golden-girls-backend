@@ -31,7 +31,7 @@ app.get(baseRoute + 'games', (req, res) => {
         const end_date = req.params.end_date;
         const sport = req.params.sport;
     }
-    games = gamesSend.getNBAData();
+    games = gamesSend.sendNBAGames();
     res.send(games);
 });
 
