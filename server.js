@@ -40,7 +40,7 @@ app.get(baseRoute + 'live', (req, res) => {
     if (req.params.start_date && req.params.end_date && req.params.sport) {
         const sport = req.params.sport;
     }
-    sores = scoresSend.sendNBAScores();
+    scores = scoresSend.sendNBAScores();
     res.send(scores);
 });
 
