@@ -59,4 +59,6 @@ function getLiveScore(){
       }
 }
 
-getLiveScore();
+module.exports = {
+    getLiveScore,
+};

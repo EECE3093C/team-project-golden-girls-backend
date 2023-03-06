@@ -73,6 +73,4 @@ function getStandings() {
 
 }
 
-getStandings();
-
 module.exports = { getStandings };
