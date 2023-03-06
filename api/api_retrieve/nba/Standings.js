@@ -13,11 +13,11 @@ dotenv.config();
 
 function getStandings() {
 
-  let date_ob = new Date()
+  let date_ob = new Date();
   const season = tools.getSeason(date_ob);
 
-  /**
-* define the paths used to retrieve data when building JSON object.
+/**
+* define the paths used to retrieve data when storing JSON object.
 */
   const standingsSendPath = `data/NBA/standings/${season}/`;
 
