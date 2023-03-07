@@ -7,12 +7,18 @@ const port = process.env.PORT || 9000;
 const gamesRetrieve = require('./api/api_retrieve/nba/Game.js');
 const gamesSend = require('./api/api_send/nba/Game.js')
 const scoresSend = require('./api/api_send/nba/ScoreLive.js');
+const scoresRetrieve = require('./api/api_retrieve/nba/ScoreLive.js');
 const standingsRetrieve = require('./api/api_retrieve/nba/Standings.js');
 
 app.use(cors());
 
-console.log("Making initial API calls...")
 // make initial api calls
+console.log("Making initial API calls...")
+
+scoresRetrieve.getLiveScore();
+gamesRetrieve.getGames();
+standingsRetrieve.getStandings();
+
 console.log("Initial API calls complete.")
 
 // This displays message that the server running and listening to specified port
@@ -38,6 +44,7 @@ app.get(baseRoute + 'live', (req, res) => {
     if (req.params.start_date && req.params.end_date && req.params.sport) {
         const sport = req.params.sport;
     }
+    scoresRetrieve.getLiveScore();
     gamesRetrieve.getGames();
     scores = scoresSend.sendNBAScores();
     res.send(scores);

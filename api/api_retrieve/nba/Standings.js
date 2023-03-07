@@ -14,12 +14,12 @@ dotenv.config();
 function getStandings() {
 
   let date_ob = new Date();
-  date_ob.setDate(date_ob.getDate() + 1);
+  date_ob.setDate(date_ob.getDate());
   const season = tools.getSeason(date_ob);
 
-/**
-* define the paths used to retrieve data when storing JSON object.
-*/
+  /**
+  * define the paths used to retrieve data when storing JSON object.
+  */
   const standingsSendPath = `data/NBA/standings/${season}/`;
 
   let day = ("0" + (date_ob.getUTCDate())).slice(-2);

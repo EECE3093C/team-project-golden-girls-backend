@@ -19,10 +19,10 @@
 
 const fs = require('fs');
 const tools = require('../../tools.js');
- 
 
-function sendNBAGames(number_of_days=2) {
-    
+
+function sendNBAGames(number_of_days = 2) {
+
     /**
      * create date object used to name retrieve dated files and information
      */
