@@ -19,7 +19,7 @@ const tools = require('../../tools.js');
 
 function sendNBAScores(){
     let date_ob = new Date()
-    date_ob.setUTCDate(date_ob.getUTCDate());
+    date_ob.setUTCDate(date_ob.getUTCDate() + 1);
     let season = tools.getSeason(date_ob);
     let response;
 
@@ -30,12 +30,13 @@ function sendNBAScores(){
     const day = ("0" + date_ob.getUTCDate()).slice(-2);
     const month = ("0" + (date_ob.getUTCMonth() + 1)).slice(-2);
     const date = (`${date_ob.getUTCFullYear()}-${month}-${day}`);
+    console.log(date);
 
     /**
      * define the paths used to retrieve data when building JSON object.
     */
-    const scoresStorePath = `data/NBA/scores/${season}/`; //path to the directory where live score data is stored
-    const standingsStorePath = `data/NBA/standings/${season}`; //path to the directory where standings data is stored
+    const scoresStorePath = `data/NBA/games/`; //path to the directory where live score data is stored
+    const standingsStorePath = `data/NBA/standings/${season}/`; //path to the directory where standings data is stored
     const teamColorsFilePath = `assets/colors.json`; //path to file containg the NBA team colors
     const scoresTemplatePath = `api/api_send_templates/live_games.json` //path to file containg the JSON template for live games object
 
@@ -46,8 +47,8 @@ function sendNBAScores(){
     let data;
     try {
         response = JSON.parse(fs.readFileSync(scoresTemplatePath))
-        standings = JSON.parse(fs.readFileSync(`${standingsStorePath}/${date}.json`))
-        data = fs.readFileSync(`${scoresStorePath}/${date}.json`)
+        standings = JSON.parse(fs.readFileSync(`${standingsStorePath}${date}.json`))
+        data = fs.readFileSync(`${scoresStorePath}${date}.json`)
     } catch (err) {
         console.log(err);
     }

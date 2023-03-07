@@ -14,6 +14,7 @@ dotenv.config();
 function getStandings() {
 
   let date_ob = new Date();
+  date_ob.setDate(date_ob.getDate() + 1);
   const season = tools.getSeason(date_ob);
 
 /**
@@ -72,5 +73,6 @@ function getStandings() {
   }
 
 }
+getStandings();
 
 module.exports = { getStandings };

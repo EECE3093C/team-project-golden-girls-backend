@@ -13,8 +13,6 @@ app.use(cors());
 
 console.log("Making initial API calls...")
 // make initial api calls
-gamesRetrieve.getGames();
-standingsRetrieve.getStandings();
 console.log("Initial API calls complete.")
 
 // This displays message that the server running and listening to specified port
@@ -40,6 +38,7 @@ app.get(baseRoute + 'live', (req, res) => {
     if (req.params.start_date && req.params.end_date && req.params.sport) {
         const sport = req.params.sport;
     }
+    gamesRetrieve.getGames();
     scores = scoresSend.sendNBAScores();
     res.send(scores);
 });
