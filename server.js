@@ -4,43 +4,51 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const port = process.env.PORT || 9000;
-const gamesRetrieve = require('./api/api_retrieve/nba/Game.js');
-const gamesSend = require('./api/api_send/nba/Game.js')
-const scoresSend = require('./api/api_send/nba/ScoreLive.js');
-const standingsRetrieve = require('./api/api_retrieve/nba/Standings.js');
+const gamesRetrieve = require('./api/api_retrieve/nba/game_get.js');
+const gamesSend = require('./api/api_send/nba/game_send.js')
+const scoresSend = require('./api/api_send/nba/score_send.js');
+const scoresRetrieve = require('./api/api_retrieve/nba/score_get.js');
+const standingsRetrieve = require('./api/api_retrieve/nba/standings_get.js');
 
 app.use(cors());
 
-console.log("Making initial API calls...")
 // make initial api calls
-gamesRetrieve.getGames();
-standingsRetrieve.getStandings();
-console.log("Initial API calls complete.")
 
-// This displays message that the server running and listening to specified port
-app.listen(port, () => console.log(`Listening on port ${port}`));
 
-// create a GET route
-let baseRoute = '/api/v1/';
-app.get(baseRoute + 'healthy', (req, res) => {
-    res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT! YAY!' });
-});
+async function main(){
+    console.log("Making initial API calls...")
+   
+    const gameData = await gamesRetrieve.getGames();
+    const standingData = await standingsRetrieve.getStandings();
+    const scoreData = await scoresRetrieve.getScores();
 
-app.get(baseRoute + 'games', (req, res) => {
-    if (req.params.start_date && req.params.end_date && req.params.sport) {
-        const start_date = req.params.start_date;
-        const end_date = req.params.end_date;
-        const sport = req.params.sport;
-    }
-    games = gamesSend.sendNBAGames();
-    res.send(games);
-});
+    console.log("Initial API calls complete.")
 
-app.get(baseRoute + 'live', (req, res) => {
-    if (req.params.start_date && req.params.end_date && req.params.sport) {
-        const sport = req.params.sport;
-    }
-    sores = scoresSend.sendNBAScores();
-    res.send(scores);
-});
+    // This displays message that the server running and listening to specified port
+    app.listen(port, () => console.log(`Listening on port ${port}`));
 
+    // create a GET route
+    let baseRoute = '/api/v1/';
+    app.get(baseRoute + 'healthy', (req, res) => {
+        res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT! YAY!' });
+    });
+
+    app.get(baseRoute + 'games', async (req, res) => {
+        if (req.params.start_date && req.params.end_date && req.params.sport) {
+            const start_date = req.params.start_date;
+            const end_date = req.params.end_date;
+            const sport = req.params.sport;
+        }
+        const games = await gamesSend.sendNBAGames(gameData, standingData);
+        res.send(games);
+    });
+
+    app.get(baseRoute + 'live', async (req, res) => {
+        if (req.params.start_date && req.params.end_date && req.params.sport) {
+            const sport = req.params.sport;
+        }
+        scores = await scoresSend.sendNBAScores(gameData, standingData, scoreData);
+        res.send(scores);
+    });
+}
+main();
