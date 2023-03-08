@@ -15,9 +15,12 @@
  */
 
 const fs = require('fs');
+const { getGames } = require('../../api_retrieve/nba/game_get.js');
+const { getScores } = require('../../api_retrieve/nba/score_get.js');
+const { getStandings } = require('../../api_retrieve/nba/standings_get.js');
 const tools = require('../../tools.js');
 
-async function sendNBAScores(number_of_days = 1){
+async function sendNBAScores(recievedGameData, recievedStandingData, recievedScoreData, number_of_days = 1){
     let currentLocalDate = new Date(Date.now() + (-300 * 60 * 1000))
     const currentUTCDate = new Date();
     const season = tools.getSeason(currentUTCDate);
@@ -25,12 +28,10 @@ async function sendNBAScores(number_of_days = 1){
     /**
     * define the paths used to retrieve data when building JSON object.
     */
-    const GAMES_STORE_PATH = `data/NBA/games/`; //path to the directory where game data is stored
-    const STANDINGS_STORE_PATH = `data/NBA/standings/${season}/`; //path to the directory where standings data is stored
     const SCORES_STORE_PATH = `data/nba/scores/${season}/`; //path to directory containg the live score data
 
     const dateRange = [];
-    let gameFileData, dateStr, scoreFileData, standingsFileData;
+    let gameFileData, dateStr, standingsFileData;
     let combinedGamesData = [];
     const response = {};
     response.games = [];
@@ -40,10 +41,7 @@ async function sendNBAScores(number_of_days = 1){
         currentLocalDate = new Date(currentLocalDate.getTime() + 86400000); // add 24 hours in milliseconds
     }
 
-
-    const standingsDate = (`${currentUTCDate.getUTCFullYear()}-${("0" + (currentUTCDate.getUTCMonth() + 1)).slice(-2)}-${("0" + currentUTCDate.getUTCDate()).slice(-2)}`);
-    standingsFileData = JSON.parse(fs.readFileSync(STANDINGS_STORE_PATH + standingsDate + `.json`))
-    
+    standingsFileData = recievedStandingData;
 
     dateRange.forEach(date => {
         let currentDateGamesData = [];
@@ -53,23 +51,24 @@ async function sendNBAScores(number_of_days = 1){
         dateSearchRange.forEach(dateSearch => {
             dateStr = (`${dateSearch.getUTCFullYear()}-${("0" + (dateSearch.getUTCMonth() + 1)).slice(-2)}-${("0" + dateSearch.getUTCDate()).slice(-2)}`);
             try {
-                gameFileData = JSON.parse(fs.readFileSync(GAMES_STORE_PATH + dateStr + `.json`))
-                scoreFileData = JSON.parse(fs.readFileSync(SCORES_STORE_PATH + dateStr + `.json`))
+                gameFileData = recievedGameData[dateStr];
             } catch (err) {
                 console.log(err);
             }
             currentDateGamesData = currentDateGamesData.concat(tools.gamesToday(date, gameFileData.response));
             
-            if (scoreFileData.response[0]) {
-                for (let i = 0; i < scoreFileData.response.length; i++) {
-                    let games = currentDateGamesData
-                    currentDateGamesData = tools.isGameInLive(scoreFileData.response[i], games);
-                }
-            }
+            
         });
         combinedGamesData = combinedGamesData.concat(currentDateGamesData);
-    
     });
+
+    scoreFileData = recievedScoreData;
+
+    for (let i = 0; i < scoreFileData.response.length; i++) {
+        let games = combinedGamesData
+        combinedGamesData = tools.isGameInLive(scoreFileData.response[i], games);
+    }
+
 
     combinedGamesData.forEach(gameData => {
         
@@ -109,7 +108,6 @@ async function sendNBAScores(number_of_days = 1){
     });
     return response; //return the response object to be sent to front end
 }
-
 
 module.exports = {
     sendNBAScores

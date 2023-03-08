@@ -17,9 +17,10 @@ app.use(cors());
 
 async function main(){
     console.log("Making initial API calls...")
-    const gameData = await gamesRetrieve.getGamesNew();
-    scoresRetrieve.getLiveScore();
-    standingsRetrieve.getStandings();
+   
+    const gameData = await gamesRetrieve.getGames();
+    const standingData = await standingsRetrieve.getStandings();
+    const scoreData = await scoresRetrieve.getScores();
 
     console.log("Initial API calls complete.")
 
@@ -38,7 +39,7 @@ async function main(){
             const end_date = req.params.end_date;
             const sport = req.params.sport;
         }
-        const games = await gamesSend.sendNBAGames(gameData);
+        const games = await gamesSend.sendNBAGames(gameData, standingData);
         res.send(games);
     });
 
@@ -46,8 +47,7 @@ async function main(){
         if (req.params.start_date && req.params.end_date && req.params.sport) {
             const sport = req.params.sport;
         }
-        scoresRetrieve.getLiveScore();
-        scores = await scoresSend.sendNBAScores();
+        scores = await scoresSend.sendNBAScores(gameData, standingData, scoreData);
         res.send(scores);
     });
 }

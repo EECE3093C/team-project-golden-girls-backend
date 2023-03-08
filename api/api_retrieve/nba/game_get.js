@@ -4,7 +4,6 @@
  * 3/3/23, Nate Louder(nate-dev): modified the method of getting dates and creating JSON files to get the next 7 days and check if files exist before calling for their data.
  */
 
-const fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -53,4 +52,4 @@ async function getGames(number_of_days = 3) {
   return response;
 }
 
-module.exports = { getGamesNew: getGames };
+module.exports = { getGames };

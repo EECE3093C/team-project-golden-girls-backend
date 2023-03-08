@@ -17,25 +17,18 @@
  *  - 3/3/23, Nate Louder(nate-dev): finalized relationships between pull and send files.
  */
 
-const { response } = require('express');
 const fs = require('fs');
-const { getGamesNew } = require('../../api_retrieve/nba/game_get.js');
 const tools = require('../../tools.js');
 
-
-
-
-async function sendNBAGames(recievedGameData, number_of_days = 1) {
+async function sendNBAGames(recievedGameData, recievedStandingData, number_of_days = 1) {
 
     let currentLocalDate = new Date(Date.now() + (-300 * 60 * 1000))
     const currentUTCDate = new Date();
-    const season = tools.getSeason(currentUTCDate);
 
     /**
     * define the paths used to retrieve data when building JSON object.
     */
-    const GAMES_STORE_PATH = `data/NBA/games/`; //path to the directory where game data is stored
-    const STANDINGS_STORE_PATH = `data/NBA/standings/${season}/`; //path to the directory where standings data is stored
+   
     const TEAM_COLORS_STORE_PATH = `assets/colors.json`; //path to file containg the NBA team colors
     
     const dateRange = [];
@@ -48,10 +41,8 @@ async function sendNBAGames(recievedGameData, number_of_days = 1) {
         dateRange.push(currentLocalDate);
         currentLocalDate = new Date(currentLocalDate.getTime() + 86400000); // add 24 hours in milliseconds
     }
-    
-    const standingsDate = (`${currentUTCDate.getUTCFullYear()}-${("0" + (currentUTCDate.getUTCMonth() + 1)).slice(-2)}-${("0" + currentUTCDate.getUTCDate()).slice(-2)}`);
 
-    standings = JSON.parse(fs.readFileSync(STANDINGS_STORE_PATH + standingsDate + `.json`))
+    standings = recievedStandingData;
 
     dateRange.forEach(date => {
         let currentDateGamesData = [];
