@@ -9,7 +9,7 @@ const fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config();
 
-function getGames(number_of_days = 2) {
+async function getGames(number_of_days = 2) {
   /**
   * define the paths used to retrieve data when building JSON object.
   */

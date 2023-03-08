@@ -19,6 +19,7 @@
 
 const { response } = require('express');
 const fs = require('fs');
+const { getGamesNew } = require('../../api_retrieve/nba/game_get_new.js');
 const tools = require('../../tools.js');
 
 
@@ -60,7 +61,9 @@ async function sendNBAGames(number_of_days = 1) {
         dateSearchRange.forEach(dateSearch => {
             dateStr = (`${dateSearch.getUTCFullYear()}-${("0" + (dateSearch.getUTCMonth() + 1)).slice(-2)}-${("0" + dateSearch.getUTCDate()).slice(-2)}`);
             try {
-                gameFileData = JSON.parse(fs.readFileSync(GAMES_STORE_PATH + dateStr + `.json`))
+                //gameFileData = JSON.parse(fs.readFileSync(GAMES_STORE_PATH + dateStr + `.json`))
+                console.log('hi');
+                gameFileData = getGamesNew(dateSearch);
             } catch (err) {
                 console.log(err);
             }
@@ -104,5 +107,11 @@ async function sendNBAGames(number_of_days = 1) {
     return response;
 }
 
+async function main(){
+    const result = await sendNBAGames();
+    console.log(result);
+}
+
+main();
 
 module.exports = { sendNBAGames };
