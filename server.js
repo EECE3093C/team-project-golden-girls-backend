@@ -4,11 +4,11 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const port = process.env.PORT || 9000;
-const gamesRetrieve = require('./api/api_retrieve/nba/Game.js');
-const gamesSend = require('./api/api_send/nba/Game.js')
-const scoresSend = require('./api/api_send/nba/ScoreLive.js');
-const scoresRetrieve = require('./api/api_retrieve/nba/ScoreLive.js');
-const standingsRetrieve = require('./api/api_retrieve/nba/Standings.js');
+const gamesRetrieve = require('./api/api_retrieve/nba/game-get.js');
+const gamesSend = require('./api/api_send/nba/game-send.js')
+const scoresSend = require('./api/api_send/nba/score-live-send.js');
+const scoresRetrieve = require('./api/api_retrieve/nba/score-get.js');
+const standingsRetrieve = require('./api/api_retrieve/nba/standings-get.js');
 
 app.use(cors());
 

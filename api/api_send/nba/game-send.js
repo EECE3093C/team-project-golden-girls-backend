@@ -21,7 +21,7 @@ const fs = require('fs');
 const tools = require('../../tools.js');
 
 
-function sendNBAGames(number_of_days = 2) {
+function sendNBAGames(number_of_days = 6) {
 
     /**
      * create date object used to name retrieve dated files and information
@@ -42,22 +42,23 @@ function sendNBAGames(number_of_days = 2) {
     /**
      * create a range of dates for the games being retrieved.
      */
-    let day, month = "";
-    const dateRange = [];
+    const dateRangeObj = [];
 
-    for (let i = 0; i < number_of_days; i++) {
-        day = ("0" + date_ob.getUTCDate()).slice(-2);
-        month = ("0" + (date_ob.getUTCMonth() + 1)).slice(-2);
-        dateRange.push(`${date_ob.getUTCFullYear()}-${month}-${day}`);
+    for (let i = 0; i < number_of_days; i++) { 
+        dateRangeObj.push(date_ob);
         date_ob = new Date(date_ob.getTime() + 86400000); // add 24 hours in milliseconds
     }
 
+    let day = ("0" + dateRangeObj[0].getUTCDate()).slice(-2);
+    let month = ("0" + (dateRangeObj[0].getUTCMonth() + 1)).slice(-2);
+    let date = (`${dateRangeObj[0].getUTCFullYear()}-${month}-${day}`);
+
     /**
      * retrieves the games send_api_template for games and stores it in the response variable.
-     */
+    */
     try {
         response = JSON.parse(fs.readFileSync(gameTemplatePath))
-        standings = JSON.parse(fs.readFileSync(`${standingsStorePath}/${dateRange[0]}.json`))
+        standings = JSON.parse(fs.readFileSync(`${standingsStorePath}/${date}.json`))
     } catch (err) {
         console.log(err);
     }
@@ -65,17 +66,27 @@ function sendNBAGames(number_of_days = 2) {
     /**  
      * set the time frame to the first and last values of the date range.
     */
-    response.timeFrame.startDate = dateRange[0];
-    response.timeFrame.endDate = dateRange[dateRange.length - 1];
+    //response.timeFrame.startDate = dateRangeStr[0];
+    //response.timeFrame.endDate = dateRangeStr[dateRangeStr.length - 1];
 
     /**
      * loops through all the dates in the date range and assigns related info from the stored JSON 
      * files from API-NBA api to the api_send_templates.games JSON object to be sent to the front-end.
      */
 
-    dateRange.forEach(date => {
-        let data = fs.readFileSync(`${gamesStorePath}/${date}.json`)
+
+    dateRangeObj.forEach(date_ob => {
+
+        let day = ("0" + date_ob.getUTCDate()).slice(-2);
+        let month = ("0" + (date_ob.getUTCMonth() + 1)).slice(-2);
+        let date = (`${date_ob.getUTCFullYear()}-${month}-${day}`);
+        console.log(date)
+
+        let data = fs.readFileSync(`${gamesStorePath}/game-data.json`)
         let games = JSON.parse(data);
+
+        console.log(dateRangeObj);
+        console.log(tools.gamesToday(date_ob, games.response));
 
         /**  
          * build game object will contain the info of each game and be add added to the list of games after each one is built.
@@ -85,6 +96,7 @@ function sendNBAGames(number_of_days = 2) {
         for (let i = 0; i < games.response.length; i++) {
             let game = games.response[i];
             let tempbGameOb = JSON.parse(JSON.stringify(bGameOb));
+
 
             //Home team parse
             tempbGameOb.homeTeam.name = game.teams.home.nickname;
@@ -144,5 +156,6 @@ function sendNBAGames(number_of_days = 2) {
     });
     return response; //return the response object to be sent to front end
 }
+sendNBAGames();
 
 module.exports = { sendNBAGames };
