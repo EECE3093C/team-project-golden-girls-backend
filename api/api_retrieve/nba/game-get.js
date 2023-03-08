@@ -79,6 +79,5 @@ function getGames(number_of_days = 2) {
     }
   });
 }
-getGames();
 
 module.exports = { getGames };

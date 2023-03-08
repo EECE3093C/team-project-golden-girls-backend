@@ -105,6 +105,5 @@ function sendNBAGames(number_of_days = 1) {
     return response;
 }
 
-console.log(sendNBAGames().games[0]);
 
 module.exports = { sendNBAGames };
