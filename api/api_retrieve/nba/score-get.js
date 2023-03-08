@@ -18,7 +18,7 @@ function getLiveScore(){
     */
     const scoreSendPath = `data/NBA/scores/${season}/`;
 
-    let day = ("0" + (date_ob.getUTCDate())).slice(-2);
+    let day = ("0" + (date_ob.getUTCDate() + 1)).slice(-2);
     let month = ("0" + (date_ob.getUTCMonth() + 1)).slice(-2);
     let date = `${date_ob.getUTCFullYear()}-${month}-${day}`;
 
@@ -34,7 +34,7 @@ function getLiveScore(){
     const options = {
         method: 'GET',
         url: 'https://api-nba-v1.p.rapidapi.com/games',
-        qs: {live: 'all', league: 'standard'},
+        qs: {live: 'all'},
         headers: {
             'X-RapidAPI-Key': process.env.RAPID_API_KEY,
             'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com',
@@ -58,6 +58,8 @@ function getLiveScore(){
         });
       }
 }
+
+getLiveScore();
 
 module.exports = {
     getLiveScore,

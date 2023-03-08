@@ -124,7 +124,7 @@ function getSeason(dateObj) {
 
 function getGameDatesUTC(date_ob_local, date_ob_utc){
   
-  if (date_ob_local.getDate() != date_ob_utc.getDate()){
+  if (date_ob_local.getDate() === date_ob_utc.getDate()){
     date_ob_local.setDate(date_ob_local.getUTCDate());
     date_ob_local.setHours(date_ob_local.getUTCHours());
     date_ob_utc.setUTCDate(date_ob_local.getUTCDate() + 1);
@@ -138,7 +138,7 @@ function getGameDatesUTC(date_ob_local, date_ob_utc){
   }
 }
 
-function gamesToday(date, games){
+function gamesToday(date, games){ //TODO: add logic to check for games that happened yesterday an hour or 2 after midnight local time
   let gamesToday = [];
 
   for (let i = 0; i < games.length; i++) {
@@ -150,6 +150,16 @@ function gamesToday(date, games){
   return gamesToday;
 }
 
+function isGameInLive(liveGame, games){
+  
+  for (let i = 0; i < games.length; i++) {
+    if (liveGame.id === games[i].id) {
+      games[i] = liveGame;
+      break
+    }
+  }
+  return games;
+}
 
   
 //console.log(getGameDatesUTC());
@@ -161,6 +171,7 @@ module.exports = {
     getSeason,
     getGameDatesUTC,
     gamesToday,
+    isGameInLive,
 
   };
 
