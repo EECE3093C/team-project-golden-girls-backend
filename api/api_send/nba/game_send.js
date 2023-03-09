@@ -1,3 +1,6 @@
+const fs = require('fs');
+const tools = require('../../tools.js');
+
 /**
  * File: Game.js
  * Description: The Games.js file contains a process for parsing stored JSON files from the
@@ -9,34 +12,28 @@
  *  up team colors and records, and formatting dates and times.
  * 
  * @author: [Nate Louder]
- * @date: [Date Created: 03/02/23 / Modified: 03/03/23]
+ * @date: [Date Created: 03/02/23 / Modified: 03/09/23]
  * 
- * HISTORY:
- *  - 3/2/23, Nate Louder(nate-dev): Created file. Setup process to parse through the stored 
- *  JSON files from API-NBA and pull data to build JSON object being sent to front end.
- *  - 3/3/23, Nate Louder(nate-dev): finalized relationships between pull and send files.
- */
-
-const fs = require('fs');
-const tools = require('../../tools.js');
+*/
 
 async function sendNBAGames(recievedGameData, recievedStandingData, number_of_days = 2) {
-
+    // Get current local date and UTC date
     let currentLocalDate = new Date(Date.now() + (-300 * 60 * 1000))
     const currentUTCDate = new Date();
 
     /**
-    * define the paths used to retrieve data when building JSON object.
-    */
-   
-    const TEAM_COLORS_STORE_PATH = `assets/colors.json`; //path to file containg the NBA team colors
-    
+     * Define the paths used to retrieve data when building JSON object.
+     */
+    const TEAM_COLORS_STORE_PATH = `assets/colors.json`; // Path to file containing the NBA team colors
+
+    // Initialize variables
     const dateRange = [];
     let gameFileData, dateStr;
     let combinedGamesData = [];
     const response = {};
     response.games = [];
-    
+
+    // Build date range based on number of days requested
     for (let i = 0; i < number_of_days; i++) { 
         dateRange.push(currentLocalDate);
         currentLocalDate = new Date(currentLocalDate.getTime() + 86400000); // add 24 hours in milliseconds
@@ -44,11 +41,13 @@ async function sendNBAGames(recievedGameData, recievedStandingData, number_of_da
 
     standings = recievedStandingData;
 
+    // Iterate through date range and retrieve game data for each date
     dateRange.forEach(date => {
         let currentDateGamesData = [];
         utcDate = new Date(date.getTime() + (300 * 60 * 1000))
         dateSearchRange = tools.getGameDatesUTC(date, utcDate);
 
+        // Retrieve game data for each date and combine into array
         dateSearchRange.forEach(dateSearch => {
             dateStr = (`${dateSearch.getUTCFullYear()}-${("0" + (dateSearch.getUTCMonth() + 1)).slice(-2)}-${("0" + dateSearch.getUTCDate()).slice(-2)}`);
             try {
@@ -61,6 +60,7 @@ async function sendNBAGames(recievedGameData, recievedStandingData, number_of_da
         combinedGamesData = combinedGamesData.concat(currentDateGamesData);
     });
 
+    // Build response object
     response.timeFrame = {"startDate": dateRange[0], "endDate": dateRange[dateRange.length - 1]};
     combinedGamesData.forEach(gameData => {
         

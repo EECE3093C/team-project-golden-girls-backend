@@ -3,24 +3,38 @@
  * Description: A collection of utility functions for common tasks.
  *
  * Functions:
- *   - lookForTeamRecord(team, standings): Searches for a specified team's record within a standings response object.
- *     Returns the team's wins and losses if found, otherwise returns null.
+ *   - lookForTeamRecord(team, standings):
+ *     Description: Searches for a team's record in standings and returns their wins and losses if found.
+ *     Returns: Team record (wins and losses) if found, otherwise null.
  *
- *   - lookForColor(team, nbaColors): Searches for a specified team's primary color within an object containing
- *     NBA team colors. Returns the color if found, otherwise returns null.
+ *   - lookForColor(team, nbaColors):
+ *     Description: Searches for a team's primary color within an object containing NBA team colors.
+ *     Returns: The team's color if found, otherwise null.
  *
- *   - removeWordsFromString(inputString, unwantedWordsString): Removes specified words from a given input string.
- *     Returns a new string with unwanted words removed.
- * 
- *   - getSeason(dateObj): finds the current season of the NBA.
- *     Returns the year of the current NBA season based on the given date.
+ *   - removeWordsFromString(inputString, unwantedWordsString):
+ *     Description: Removes specified words from a given string.
+ *     Returns: A new string with unwanted words removed.
+ *
+ *   - getSeason(dateObj):
+ *     Description: Finds the current NBA season based on a given date.
+ *     Returns: The year of the current NBA season.
+ *
+ *   - gamesToday(date, games):
+ *     Description: Filters an array of games to return only those scheduled for the current date.
+ *     Parameters:
+ *       - date: A Date object representing the current date.
+ *       - games: An array of game objects.
+ *     Returns: An array of game objects scheduled for the current date.
+ *
+ *   - isGameInLive(liveGame, games):
+ *     Description: Adds or updates a live game object in an array of game objects.
+ *     Parameters:
+ *       - liveGame: An object representing the live game to add or update.
+ *       - games: An array of game objects.
+ *     Returns: The updated array of game objects with the live game added or updated.
  *
  * @author: [Nate Louder]
- * @date: [Date Created: 03/02/23 / Modified: 03/03/23]
- * 
- * History:
- *  - 3/2/23, Nate Louder(nate-dev): Created file; Created removeWordsFromString function; Created lookForColor function
- *  - 3/3/23, Nate Louder(nate-dev): Created lookForTeamRecord function; Created getSeason function
+ * @date: [Date Created: 03/02/23 / Modified: 03/09/23]
  * 
 */
 
@@ -105,66 +119,92 @@ function getSeason(dateObj) {
 }
 
 /**
- * Returns an array of two JavaScript Date objects representing the current date in the 
- * Eastern Standard Time (EST) timezone and the current date in Coordinated Universal Time (UTC).
- *
- * The function uses the Date object to create two separate Date objects: one for the 
- * current local date and time in EST and another for the current date and time in UTC. 
- * It then adjusts the local date object to UTC time using the setUTCDate and setUTCHours 
- * methods, and returns the two Date objects as an array.
- *
- * @returns {Date[]} - An array of two Date objects: the first representing the current 
- * date and time in EST and the second representing the current date and time in UTC.
- *
- * @example
- * Returns [2023-03-08T01:35:26.562Z, 2023-03-07T21:35:26.562Z]
- *
- * @returns {number} - The year of the current NBA season based on the given date.
+ * Returns the UTC dates for the current day and the next day if the local day is the same as the utc day,
+ * otherwise returns the UTC dates for the previous day and the current day.
+ * @param {Date} date_ob_local - A JavaScript Date object representing the current local date and time.
+ * @param {Date} date_ob_utc - A JavaScript Date object representing the current UTC date and time.
+ * @returns {Array} An array containing two JavaScript Date objects representing the UTC dates for the current and next days
+ * or the previous and current days, depending on the current local time.
  */
 
 function getGameDatesUTC(date_ob_local, date_ob_utc){
   
+  // Check if the current local date is within the first 12 hours of the day
   if (date_ob_local.getDate() === date_ob_utc.getDate()){
-    date_ob_local.setDate(date_ob_local.getUTCDate());
-    date_ob_local.setHours(date_ob_local.getUTCHours());
-    date_ob_utc.setUTCDate(date_ob_local.getUTCDate() + 1);
-    return [date_ob_local, date_ob_utc];
+    // If yes, return the UTC dates for the current day and the next day
+    let next_date_ob_utc = new Date(date_ob_utc.getTime() + 86400000);
+    return [date_ob_utc, next_date_ob_utc];
   }
   else{
-    date_ob_local.setDate(date_ob_local.getUTCDate());
-    date_ob_local.setHours(date_ob_local.getUTCHours());
-    date_ob_utc.setUTCDate(date_ob_local.getUTCDate() - 1);
-    return[date_ob_utc, date_ob_local]
+    // If no, return the UTC dates for the previous day and the current day
+    let previous_date_ob_utc = new Date(date_ob_utc.getTime() - 86400000);
+    return[previous_date_ob_utc, date_ob_utc]
   }
 }
 
-function gamesToday(date, games){ //TODO: add logic to check for games that happened yesterday an hour or 2 after midnight local time
+/**
+ * This function takes a date and an array of games as input and returns an array
+ * of games that are scheduled for the same day as the input date.
+ *
+ * @param {Date} date - The date to compare the games to
+ * @param {Array} games - An array of game objects
+ * @returns {Array} - An array of game objects that are scheduled for the same day as the input date
+*/
+
+function gamesToday(date, games){
+  // Create an empty array to store the games that are scheduled for the input date
   let gamesToday = [];
 
+  // Loop through each game in the input array of games
   for (let i = 0; i < games.length; i++) {
+    // Create a new date object for the start time of the current game
     let gameDate = new Date(games[i].date.start)
+    
+    // Check if the day, month, and year of the current game's start time match the input date
     if (gameDate.getDate() === date.getDate() && gameDate.getMonth() === date.getMonth() && gameDate.getFullYear() === date.getFullYear()){
+      // If the game is scheduled for the same day as the input date, add it to the gamesToday array
       gamesToday.push(games[i]);
     }
   }
+  // Return the array of games that are scheduled for the input date
   return gamesToday;
 }
 
+
+/**
+ * This function takes a live game object and an array of game objects as input.
+ * If the live game is already in the array, it replaces the existing game object
+ * with the updated live game object. Otherwise, it adds the live game object to the
+ * beginning of the array.
+ *
+ * @param {Object} liveGame - The live game object to add or update in the array
+ * @param {Array} games - An array of game objects
+ * @returns {Array} - The updated array of game objects
+*/
+
 function isGameInLive(liveGame, games){
+  // Create a flag variable to keep track of whether or not the live game has been added to the array
   let added = false;
 
+  // Loop through each game in the input array of games
   for (let i = 0; i < games.length; i++) {
+    // Check if the live game is already in the array by comparing their ids
     if (liveGame.id === games[i].id) {
+      // If the live game is already in the array, replace the existing game object with the updated live game object
       games[i] = liveGame;
       added = true;
+      // Exit the loop once the live game has been found and updated
       break
     }
   }
+  // If the live game is not already in the array, add it to the beginning of the array
   if(!added){
     games.unshift(liveGame);
   }
+  // Return the updated array of game objects
   return games;
 }
+
 
   
 //console.log(getGameDatesUTC());

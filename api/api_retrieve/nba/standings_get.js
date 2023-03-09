@@ -1,28 +1,33 @@
-/**
- * HISTORY:
- * 3/2/23, Nate Louder(nate-dev): create file Game.js; configured api parameters to call for games on the current date and store in a local file.
- * 3/3/23, Nate Louder(nate-dev): modified the method of getting dates and creating JSON files to get the next 7 days and check if files exist before calling for their data.
- */
-
 const tools = require('../../tools');
 const dotenv = require('dotenv');
 dotenv.config();
 
+/**
+ * File: getStandings.js
+ * Description: Defines an asynchronous function getStandings that fetches NBA team standings
+ * data from the api-nba-v1.p.rapidapi.com API for the current season. The function uses the fetch 
+ * method to make GET requests to the API and returns a JSON object with the team standings data. 
+ * The function includes error handling to log any errors encountered during the API calls.
+ * 
+ * @author: [Nate Louder]
+ * @date: [Date Created: 03/03/23 / Modified: 03/09/23]
+ * 
+*/
+
 async function getStandings() {
+  // Initialize the response object
   response = {}
+  
+  // Get the current UTC date
   let currentUTCDate = new Date();
   
+  // Get the current season based on the current UTC date
   const season = tools.getSeason(currentUTCDate);
-  
-  /**
-  * options: the API call parameters
-  *   type: GET
-  *   filter for date <- current date (yyyy-mm-ddd)
-  *   url to the API-NBA api <- https://api-nba-v1.p.rapidapi.com/games
-  */
 
+  // Set the API URL with the current season and league filter
   const url = `https://api-nba-v1.p.rapidapi.com/standings?league=standard&season=${season}`;
 
+  // Set the API call options including headers
   const options = {
     method: 'GET',
     headers: {
@@ -32,13 +37,18 @@ async function getStandings() {
   };
 
   try {
+    // Make the API call and parse the response into JSON format
     const data = await fetch(url, options);
     response = await data.json();
   } catch (error) {
-    console.error('Error fetching NBA games:', error);
+    // Log any errors encountered during the API call
+    console.error('Error fetching NBA team standings:', error);
   }
   
+  // Return the response object
   return response;
 }
 
-module.exports = { getStandings };
+module.exports = {
+   getStandings 
+};
