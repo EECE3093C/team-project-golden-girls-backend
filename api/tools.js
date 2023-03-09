@@ -151,12 +151,17 @@ function gamesToday(date, games){ //TODO: add logic to check for games that happ
 }
 
 function isGameInLive(liveGame, games){
-  
+  let added = false;
+
   for (let i = 0; i < games.length; i++) {
     if (liveGame.id === games[i].id) {
       games[i] = liveGame;
+      added = true;
       break
     }
+  }
+  if(!added){
+    games.unshift(liveGame);
   }
   return games;
 }

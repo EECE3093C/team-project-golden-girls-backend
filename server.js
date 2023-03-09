@@ -20,7 +20,7 @@ async function main(){
     const gameData = await gamesRetrieve.getGames();
     const standingData = await standingsRetrieve.getStandings();
 
-    let scoreData = await scoresRetrieve.getScores();
+    let scoreData;
 
     console.log("Initial API calls complete.")
 
@@ -47,8 +47,11 @@ async function main(){
         if (req.params.start_date && req.params.end_date && req.params.sport) {
             const sport = req.params.sport;
         }
+        scoreData = await scoresRetrieve.getScores();
         scores = await scoresSend.sendNBAScores(gameData, standingData, scoreData);
         res.send(scores);
     });
 }
-main();
+
+
+ main();

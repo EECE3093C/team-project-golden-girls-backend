@@ -7,11 +7,10 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-async function getGames(number_of_days = 3) {
+async function getGames(number_of_days = 4) {
   response = {}
   let currentUTCDate = new Date();
   currentUTCDate = new Date(currentUTCDate.getTime() - 86400000);
-  
 
   for (let i = 0; i < number_of_days; i++) {
     

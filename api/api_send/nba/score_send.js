@@ -14,21 +14,15 @@
  *  JSON files from API-NBA and pull data to build JSON object being sent to front end.
  */
 
-const fs = require('fs');
-const { getGames } = require('../../api_retrieve/nba/game_get.js');
-const { getScores } = require('../../api_retrieve/nba/score_get.js');
-const { getStandings } = require('../../api_retrieve/nba/standings_get.js');
 const tools = require('../../tools.js');
 
 async function sendNBAScores(recievedGameData, recievedStandingData, recievedScoreData, number_of_days = 1){
     let currentLocalDate = new Date(Date.now() + (-300 * 60 * 1000))
-    const currentUTCDate = new Date();
-    const season = tools.getSeason(currentUTCDate);
-
-    /**
-    * define the paths used to retrieve data when building JSON object.
-    */
-    const SCORES_STORE_PATH = `data/nba/scores/${season}/`; //path to directory containg the live score data
+    
+    if (currentLocalDate.getHours() < 3){
+        currentLocalDate = new Date(currentLocalDate.getTime() - 86400000)
+        number_of_days = number_of_days + 1;
+    }
 
     const dateRange = [];
     let gameFileData, dateStr, standingsFileData;

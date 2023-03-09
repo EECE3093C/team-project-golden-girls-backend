@@ -20,7 +20,7 @@
 const fs = require('fs');
 const tools = require('../../tools.js');
 
-async function sendNBAGames(recievedGameData, recievedStandingData, number_of_days = 1) {
+async function sendNBAGames(recievedGameData, recievedStandingData, number_of_days = 2) {
 
     let currentLocalDate = new Date(Date.now() + (-300 * 60 * 1000))
     const currentUTCDate = new Date();
