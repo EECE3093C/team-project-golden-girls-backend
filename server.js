@@ -12,15 +12,15 @@ const standingsRetrieve = require('./api/api_retrieve/nba/standings_get.js');
 
 app.use(cors());
 
-// make initial api calls
-
 
 async function main(){
+    // make initial api calls
     console.log("Making initial API calls...")
    
     const gameData = await gamesRetrieve.getGames();
     const standingData = await standingsRetrieve.getStandings();
-    const scoreData = await scoresRetrieve.getScores();
+
+    let scoreData = await scoresRetrieve.getScores();
 
     console.log("Initial API calls complete.")
 
