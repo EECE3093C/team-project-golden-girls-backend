@@ -89,8 +89,8 @@ async function sendNBAScores(recievedGameData, recievedStandingData, recievedSco
             "name": gameData.teams.home.nickname,
             "city": tools.removeWordsFromString(gameData.teams.home.name, gameData.teams.home.nickname),
             "logo": gameData.teams.home.logo,
-            "totalScore": gameData.teams.home.points,
-            "quarterScore": gameData.teams.home.linescore,
+            "totalScore": gameData.scores.home.points,
+            "quarterScore": gameData.scores.home.linescore,
             "record": tools.lookForTeamRecord(gameData.teams.home.name, standingsFileData),
             "code": gameData.teams.home.code
         };
@@ -98,8 +98,8 @@ async function sendNBAScores(recievedGameData, recievedStandingData, recievedSco
             "name": gameData.teams.visitors.nickname,
             "city": tools.removeWordsFromString(gameData.teams.visitors.name, gameData.teams.visitors.nickname),
             "logo": gameData.teams.visitors.logo,
-            "totalScore": gameData.teams.visitors.points,
-            "quarterScore": gameData.teams.visitors.linescore,
+            "totalScore": gameData.scores.visitors.points,
+            "quarterScore": gameData.scores.visitors.linescore,
             "record": tools.lookForTeamRecord(gameData.teams.visitors.name, standingsFileData),
             "code": gameData.teams.visitors.code
         };
@@ -108,6 +108,7 @@ async function sendNBAScores(recievedGameData, recievedStandingData, recievedSco
     });
     return response; //return the response object to be sent to front end
 }
+
 
 module.exports = {
     sendNBAScores
