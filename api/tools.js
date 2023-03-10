@@ -34,9 +34,11 @@
  *     Returns: The updated array of game objects with the live game added or updated.
  *
  * @author: [Nate Louder]
- * @date: [Date Created: 03/02/23 / Modified: 03/09/23]
+ * @date: [Date Created: 03/02/23 / Modified: 03/10/23]
  * 
 */
+
+const { response } = require("express");
 
 
 /**
@@ -206,17 +208,72 @@ function isGameInLive(liveGame, games){
 }
 
 
+
+function getPlayersSeasonPointsSorted(players, playersStats) {
+  const minutesPerPlayer = [];
   
-//console.log(getGameDatesUTC());
+  for (const player of players) {
+    let totalMinutesPlayed = 0;
+    let minutesPlayed = 0;
+    let gamesPlayed = 0;
+    let playerPos = "n/a"
+    
+    for (const playerStats of playersStats) {
+      if (player.id === playerStats.player.id) {
+        if (playerStats.min != '--') {
+          if (gamesPlayed === 0) {
+            playerPos = playerStats.pos;
+          }
+          gamesPlayed++;
+          minutesPlayed = parseInt(playerStats.min);
+          totalMinutesPlayed += minutesPlayed
+        }
+      }
+    }
+    if(gamesPlayed > 0){
+      minutesPlayed = totalMinutesPlayed / gamesPlayed;
+    }
+    minutesPerPlayer.push({"id": player.id, "avgMin": minutesPlayed, "pos": playerPos});
+  }
+
+  const sortedAvgMinutesPerPlayer = minutesPerPlayer.sort(function(a,b){
+    if (a.avgMin > b.avgMin) {
+      return -1;
+    }
+  });
+  return sortedAvgMinutesPerPlayer;
+}
+
+function getTopPlayers(players, playerStats, number_of_players = 10) {
+  const sortedPlayerIdsByMinutes = getPlayersSeasonPointsSorted(players, playerStats)
+  const response = [];
+
+  for (let i = 0; i < number_of_players; i++) {
+    const currentPlayer = sortedPlayerIdsByMinutes[i];
+
+    for (const player of players) {
+      if (currentPlayer.id === player.id) {
+        player['avgMin'] = Math.ceil(currentPlayer.avgMin);
+        player['pos'] = currentPlayer.pos;
+        response.push(player)
+        break
+      }
+    }
+  }
+  return response;
+}
+
 
 module.exports = {
-    removeWordsFromString,
-    lookForColor,
-    lookForTeamRecord,
-    getSeason,
-    getGameDatesUTC,
-    gamesToday,
-    isGameInLive,
+  removeWordsFromString,
+  lookForColor,
+  lookForTeamRecord,
+  getSeason,
+  getGameDatesUTC,
+  gamesToday,
+  isGameInLive,
+  getPlayersSeasonPointsSorted,
+  getTopPlayers,
 
-  };
+};
 

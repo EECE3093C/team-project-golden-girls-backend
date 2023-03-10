@@ -1,29 +1,53 @@
 {
-    "team":
-    {
-        "name": "name",
-        "city": "city",
-        "code": "code",
-        "color": "#000000",
-        "record": 
+    "teams": {
+        "home":
+        {
+            "id": 0,
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "teamColor": "#000000",
+            "record": 
             {
                 "wins": 0,
                 "losses": 0
-            }
-    },
-    "players":
-    [
-        {
-            "name":
+            }, 
+            "players":
+            [
+                {
+                    "id": 0,
+                    "name":
+                    {
+                        "first": "first",
+                        "last": "last"
+                    },
+                    "position": "PG"
+                }
+            ]
+        },
+        "away": {
+            "id": 0,
+            "name": "name",
+            "city": "city",
+            "code": "code",
+            "teamColor": "#000000",
+            "record": 
             {
-                "first": "first",
-                "last": "last"
+                "wins": 0,
+                "losses": 0
             },
-            "status":
-            {
-                "short": 0,
-                "long": "Playing"
-            }
+            "players":
+            [
+                {
+                    "id": 0,
+                    "name":
+                    {
+                        "first": "first",
+                        "last": "last"
+                    },
+                    "position": "PG"
+                }
+            ] 
         }
-    ]
+    }
 }

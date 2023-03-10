@@ -9,6 +9,9 @@ const gamesSend = require('./api/api_send/nba/game_send.js')
 const scoresSend = require('./api/api_send/nba/score_send.js');
 const scoresRetrieve = require('./api/api_retrieve/nba/score_get.js');
 const standingsRetrieve = require('./api/api_retrieve/nba/standings_get.js');
+const playersRetrieve = require('./api/api_retrieve/nba/player_get.js');
+const playerStatsRetrieve = require('./api/api_retrieve/nba/player_stats_get.js');
+const { getPlayersSeasonPoints } = require('./api/tools.js');
 
 app.use(cors());
 
@@ -51,7 +54,7 @@ async function main(){
         scores = await scoresSend.sendNBAScores(gameData, standingData, scoreData);
         res.send(scores);
     });
-}
 
+}
 
  main();
