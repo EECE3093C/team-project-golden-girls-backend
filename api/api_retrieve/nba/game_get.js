@@ -44,9 +44,10 @@ async function getGames(number_of_days = 4) {
   
     let data = {};
     try {
-      const response = await fetch(url, options);
-      data = await response.json();
-    } catch (error) {
+      const result = await fetch(url, options);
+      data = await result.json();
+    } 
+    catch (error) {
       console.error('Error fetching NBA games:', error);
     }
     // Add the data to the response object with the date as the key
