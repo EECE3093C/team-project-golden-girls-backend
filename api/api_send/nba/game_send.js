@@ -71,6 +71,7 @@ async function sendNBAGames(recievedGameData, recievedStandingData, number_of_da
             "date": gameData.date.start
         };
         singleGameObj.homeTeam = {
+            "id": gameData.teams.home.id,
             "name": gameData.teams.home.nickname,
             "city": tools.removeWordsFromString(gameData.teams.home.name, gameData.teams.home.nickname),
             "teamColor": tools.lookForColor(gameData.teams.home.name, JSON.parse(fs.readFileSync(TEAM_COLORS_STORE_PATH))),
@@ -81,6 +82,7 @@ async function sendNBAGames(recievedGameData, recievedStandingData, number_of_da
             "code": gameData.teams.home.code
         };
         singleGameObj.awayTeam = {
+            "id": gameData.teams.visitors.id,
             "name": gameData.teams.visitors.nickname,
             "city": tools.removeWordsFromString(gameData.teams.visitors.name, gameData.teams.visitors.nickname),
             "teamColor": tools.lookForColor(gameData.teams.visitors.name, JSON.parse(fs.readFileSync(TEAM_COLORS_STORE_PATH))),
